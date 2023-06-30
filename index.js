@@ -7,14 +7,14 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.get('/api', (req, res) => {
+app.get('/api_example', (req, res) => {
   res.json({
-    message: 'Hello world',
+    message: 'hi',
   });
 });
 
 http.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+  console.log(`server listening on ${PORT}`);
 });
 
 const socketIO = require('socket.io')(http, {
@@ -26,7 +26,7 @@ const socketIO = require('socket.io')(http, {
 let users = [];
 
 socketIO.on('connection', (socket) => {
-  console.log(`${socket.id} user just connected!`);
+  console.log(`${socket.id} connected`);
   socket.on('message', (data) => {
     socketIO.emit('messageResponse', data);
   });
@@ -39,7 +39,7 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log(`${socket.id} disconnected`);
     users = users.filter((user) => user.socketID !== socket.id);
     socketIO.emit('newUserResponse', users);
     socket.disconnect();
